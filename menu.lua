@@ -3,12 +3,12 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 
 
-local function gotoGame()
-   composer.gotoScene( "game" )
+local function stageOne()
+   composer.gotoScene( "stage1" )
 end
 
-local function gotoSettings()
-   composer.gotoScene( "settings" )
+local function aboutGame()
+   composer.gotoScene( "about" )
 end
 ------------------------------------------------------------------------------------
     --BumbleBeeBounce menu launch screen
@@ -34,6 +34,8 @@ function scene:create( event )
     local title = display.newImageRect( sceneGroup, "assets/images/bbb-logo.png", 520, 520 )
     title.x = display.contentCenterX
     title.y = 120
+    title.strokeColor = { default={1,0.7,0.5,1}}
+    title.strokeWidth = 2
 
     --bee logo
     local beeLogo = display.newImageRect("assets/images/bee-logo.png",90,90)
@@ -41,13 +43,10 @@ function scene:create( event )
     beeLogo.y = 80
     
     --screen items
-    local diamondLogo = display.newImageRect("assets/images/diamond-purple.png",60,60)
-    diamondLogo.x = 40
-    diamondLogo.y = 120
-
     local flameLogo = display.newImageRect("assets/images/flame.png",100,410)
-    flameLogo.x = 440
-    flameLogo.y = 130
+    flameLogo.x = 240
+    flameLogo.y = 230
+    flameLogo.rotation = 90
 
     local roseLogo = display.newImageRect("assets/images/rose-flower.png",60,60)
     roseLogo.x = display.contentCenterX
@@ -84,50 +83,52 @@ function scene:create( event )
     local widget = require( "widget" )
 
     -- Create the widgets
-   start = widget.newButton(
+   play = widget.newButton(
     {
         label = "button",
         --onEvent = handleButtonEvent,
         emboss = false,
         -- Properties for a rounded rectangle button
         shape = "roundedRect",
-        width = 200,
-        height = 40,
-        cornerRadius = 2,
+        width = 100,
+        height = 30,
+        cornerRadius = 4,
         fillColor = { default={0,0,0,1}, over={1,0.1,0.7,0.4} },
         strokeColor = { default={1,0.4,0,1}, over={0.8,0.8,1,1} },
-        strokeWidth = 4
+        strokeWidth = 2
     }
 )
 
-  settings = widget.newButton(
+  about = widget.newButton(
       {
           label = "button",
           --onEvent = handleButtonEvent,
           emboss = false,
           -- Properties for a rounded rectangle button
           shape = "roundedRect",
-          width = 200,
-          height = 40,
-          cornerRadius = 2,
+          width = 100,
+          height = 30,
+          cornerRadius = 4,
           fillColor = { default={0,0,0,1}, over={1,0.1,0.7,0.4} },
           strokeColor = { default={1,0.4,0,1}, over={0.8,0.8,1,1} },
-          strokeWidth = 4
+          strokeWidth = 2
       }
   )
    
   -- Center the button
-  start.x = display.contentCenterX - 110
-  start.y = display.contentCenterY + 70
-  settings.x = display.contentCenterX + 110
-  settings.y = display.contentCenterY + 70
+  play.x = display.contentCenterX
+  play.y = display.contentCenterY + 40
+  about.x = display.contentCenterX
+  about.y = display.contentCenterY + 80
    
   -- Change the button's label text
-  start:setLabel("Start Game")
-  settings:setLabel( "Game Settings" )
+  play:setLabel("Play")
+  about:setLabel( "About" )
 
-  start:addEventListener( "tap", gotoGame )
-  settings:addEventListener( "tap", gotoSettings )
+  play:addEventListener( "tap", stageOne )
+  --about disabled due to bug on screen tap
+  --similar bug that detects screen tap on stage1 screen
+  --about:addEventListener( "tap", aboutGame )
  
     
    end
