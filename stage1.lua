@@ -19,7 +19,7 @@ function scene:create( event )
        local sceneGroup = self.view
        -- Code here runs when the scene is first created but has not yet appeared on screen
 
-       background = display.newImageRect("assets/images/bluesky.jpg", 1020, 450 )
+       background = display.newImageRect("assets/images/bluesky.jpg", 980, 450 )
        background.x = display.contentCenterX
        background.y = display.contentCenterY
 
@@ -28,16 +28,25 @@ function scene:create( event )
        bg.x = display.contentCenterX
        bg.y = display.contentCenterY
 
+       --player life bar
+       lifeBar = display.newRect(50,20,100,5)
+       lifeBar:setFillColor(0,1,0)
+       lifeBar.strokeColor = { default={1,0.4,0,1}, over={0.8,0.8,1,1} }
+       lifeBar.strokeWidth = 2
+
        --audio/sound efx
        --local soundFlame = audio.loadStream( "assets/audio/flame-sound.mp3" )
 
        soundBeeJump = audio.loadStream( "assets/audio/jump-sound.mp3" )
 
        --player score display
-       timeDisplay = display.newText("Time:0",340, 10, native.systemFont, 34)
-       timeDisplay:setFillColor(1,0,0)
+       timeTextDisplay = display.newText("time",370, 30, native.systemFont, 35)
+       timeTextDisplay:setFillColor(0,0,1)
 
-       --create player lives indicator
+       timerCount = display.newText("0",370, 60, native.systemFont, 35)
+       timerCount:setFillColor(0,0,1)
+
+       --[[create player lives indicator
        life1 = display.newImageRect("assets/images/heart-rose.png",25,25)
        life1.x = 10
        life1.y = 30
@@ -48,7 +57,7 @@ function scene:create( event )
 
        life3 = display.newImageRect("assets/images/heart-rose.png",25,25)
        life3.x = 70
-       life3.y = 30
+       life3.y = 30--]]
 
        --create reward tokens
        rose = display.newImageRect("assets/images/rose-flower.png",60,60)
@@ -81,7 +90,7 @@ function scene:create( event )
        --add rectangle borders to sky/ground scape
        roof = display.newRect(10,1,1040,0)
        
-       bottom = display.newRect(10,350,1040,1)
+       bottom = display.newRect(10,350,1040,0)
        
 
        --create ground scape(grass image)
@@ -90,6 +99,7 @@ function scene:create( event )
        ground.y = 300
        --physics.addBody( ground, "static")
 
+       --flames sprite,same image but 3 objects
        flame = display.newImageRect("assets/images/flame.png",70,200)
        flame.x = 700
        flame.y = 170
@@ -116,14 +126,16 @@ function scene:create( event )
        runtime = 0
        scrollSpeed = 2
 
+       --here to line 127 handles the screen timer
        timeCount = 0
 
        function listener( event )
           timeCount = timeCount + 1
-          timeDisplay.text = "Time:"..timeCount
+           timerCount.text = timeCount
        end
       
        timer.performWithDelay( 1000, listener, -1 )
+       ------------------------------------timer
 
        transition.to( rose, { x=-190, y=120, time=7000, transition=easing.outInBack, delay=7000,iterations=2 } )
        physics.addBody(rose,"static")
@@ -186,6 +198,7 @@ function scene:create( event )
            local physics = require( "physics" )
            physics.start()
 
+           --game play method
            game()
          
        end   
